@@ -1,0 +1,86 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #0c0c0e;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.login-box {
+  background-color: #1a1a1e;
+  border: 1px solid #333;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.login-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+}
+
+.logo-mark {
+    width: 32px;
+    height: 32px;
+    background: var(--accent-red);
+    color: var(--background-primary);
+    display: grid;
+    place-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.mono {
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.input-group input {
+  width: 100%;
+  background: #101012;
+  border: 1px solid #444;
+  color: #eee;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.btn-dev-primary {
+  width: 100%;
+  padding: 1rem;
+  background: var(--accent-red);
+  color: white;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-dev-primary:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+.login-footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: #666;
+  font-size: 0.7rem;
+}

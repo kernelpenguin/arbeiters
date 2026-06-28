@@ -1,0 +1,125 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files
+
+### Node ###
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+### Build output ###
+dist/
+build/
+out/
+.angular/
+.next/
+.nuxt/
+.output/
+bazel-out/
+.svelte-kit/
+
+### TypeScript ###
+*.tsbuildinfo
+
+### Caches ###
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+.sass-cache/
+.vite/
+.pnpm-store/
+
+### VuePress ###
+.vuepress/dist/
+.vuepress/cache/
+.temp/
+
+### Gatsby ###
+.cache/
+public/
+
+### Docusaurus ###
+.docusaurus/
+
+### VitePress ###
+.vitepress/dist/
+.vitepress/cache/
+
+### Logs ###
+logs/
+*.log
+libpeerconnection.log
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+testem.log
+
+### Runtime data ###
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+### Test coverage ###
+coverage/
+*.lcov
+.nyc_output/
+
+### Tooling ###
+.refact/
+.grunt/
+.lock-wscript
+.serverless/
+.fusebox/
+.dynamodb/
+.firebase/
+.tern-port
+
+### IDEs and editors ###
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.history/
+.vscode-test/
+
+# Allow user settings in VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### Environment variables ###
+.env
+.env.*
+!.env.example
+
+### OS generated files ###
+.DS_Store
+Thumbs.db
+
+### Other ###
+connect.lock
+typings/
+*.tgz
+.yarn-integrity
+
+### PNPM ###
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+### Prisma ###
+generated/prisma
+
+### Project Specific ###
+# Ignore nested git repository
+arbeiters/

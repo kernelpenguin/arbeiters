@@ -1,0 +1,250 @@
+<div class="dev-layout">
+  <!-- Glowing "Furnace" Background representing the collective engine -->
+  <div class="glow-orb"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Top Nav -->
+  <nav class="dev-nav">
+    <div class="dev-logo">
+      <div class="logo-mark">A</div>
+      <span class="logo-text">ARBEITERS</span>
+    </div>
+    <div class="nav-links">
+      <a href="#simulator">Simulador</a>
+      <a href="#manifesto">Manifesto</a>
+      <a href="#features">Arquitetura</a>
+    </div>
+    <div class="nav-actions">
+      <button id="nav-btn-login" class="btn-dev-outline">Acessar Painel</button>
+    </div>
+  </nav>
+
+  <!-- Centered Hero -->
+  <main class="dev-hero">
+    <div class="hero-chip mono">
+      <span class="pulse-dot"></span>
+      HISTÓRICO_SISTEMA: {{ historicoTexto }}
+    </div>
+    
+    <h1 class="hero-title">A Máquina<br>Não Controla Você.</h1>
+    
+    <p class="hero-subtitle">
+      Nossa história é forjada em vitórias contra a exploração. Hoje, na linha de montagem da Inteligência Artificial, Arbeiters é a sua ferramenta de retomada. Um sistema de extração direta de oportunidades. Sem atravessadores ou algoritmos opacos ditando o seu valor.
+    </p>
+    
+    <div class="hero-buttons">
+      <a id="hero-btn-test-simulator" href="#simulator" class="btn-dev-primary text-decoration-none">Testar Simulador</a>
+      <a id="hero-btn-explore-architecture" href="#features" class="btn-dev-secondary text-decoration-none">Ver Recursos</a>
+    </div>
+  </main>
+
+  <!-- Interactive Job Match Simulator Section -->
+  <section id="simulator" class="simulator-section">
+    <div class="section-header">
+      <h2 class="section-title">Painel de Triagem Simulado (P0)</h2>
+      <p class="section-desc">
+        Experimente em tempo real a reatividade fina das regras **RN01 (Acesso Total)** e **RN02 (Match Score)** alimentadas por sinais do Angular 22.
+      </p>
+    </div>
+
+    <div class="simulator-grid geo-cut">
+      
+      <!-- Left Panel: Worker Profile Configuration -->
+      <div class="config-panel">
+        <div class="panel-header mono">
+          <span>01 // CONFIGURAÇÃO_PERFIL</span>
+        </div>
+        
+        <div class="panel-body">
+          <!-- Skills Selector -->
+          <div class="control-group">
+            <label class="control-label">Minhas Habilidades (Tire/Adicione)</label>
+            <div class="skills-grid">
+              @for (skill of allSkills; track skill) {
+                <button 
+                  [id]="'skill-btn-' + skill.toLowerCase().replace('/', '-')"
+                  (click)="toggleSkill(skill)" 
+                  [class.active]="userSkills().includes(skill)"
+                  class="skill-badge">
+                  {{ skill }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Category Selector -->
+          <div class="control-group">
+            <label class="control-label">Plataforma / Canal de Busca</label>
+            <div class="category-tabs">
+              @for (cat of categories; track cat) {
+                <button 
+                  [id]="'category-tab-' + cat.toLowerCase().replace('/', '-')"
+                  (click)="setCategory(cat)"
+                  [class.active]="selectedCategory() === cat"
+                  class="category-tab mono">
+                  {{ cat }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Minimum Wage Selector -->
+          <div class="control-group">
+            <div class="label-row">
+              <label class="control-label">Retorno Mínimo Desejável</label>
+              <span class="wage-value mono">${{ minWagePreferred() }}/hr</span>
+            </div>
+            <input 
+              id="wage-filter-slider"
+              type="range" 
+              min="15" 
+              max="90" 
+              step="5"
+              [value]="minWagePreferred()"
+              (input)="updateWage($event)"
+              class="wage-slider">
+            <div class="slider-helper mono">
+              <span>$15/hr</span>
+              <span>$90/hr</span>
+            </div>
+            
+            @if (selectedCategory() !== 'All') {
+              <div class="slider-notice mono">
+                * Default auto-ajustado por linkedSignal para categoria: {{ selectedCategory() }}
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: Scraped Opportunities Feed -->
+      <div class="feed-panel">
+        <div class="panel-header mono">
+          <span>02 // OPORTUNIDADES_PRODUTIVAS</span>
+          <!-- Dynamic Stats counters -->
+          <div class="live-status">
+            <span class="live-indicator"></span>
+            <span>VAGAS: {{ totalOpportunities() }}</span>
+          </div>
+        </div>
+
+        <div class="feed-stats-bar">
+          <div class="stat-item">
+            <span class="stat-val mono">${{ avgWage() }}/hr</span>
+            <span class="stat-lbl">Média da Categoria</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-val mono">{{ perfectMatchesCount() }}</span>
+            <span class="stat-lbl">Matches Fortes (≥80%)</span>
+          </div>
+        </div>
+
+        <div class="opportunities-list">
+          @if (opportunitiesResource.isLoading()) {
+            <div class="loading-state mono">
+              <div class="loader-spinner"></div>
+              <span>CONECTANDO À FROTA DE SCRAPERS...</span>
+            </div>
+          } @else {
+            @for (opp of filteredOpportunities(); track opp.title) {
+              <div class="opp-card" [class.high-match]="opp.matchScore >= 80">
+                <div class="opp-header">
+                  <span class="opp-platform mono">{{ opp.platform }}</span>
+                  <span class="opp-type mono">{{ opp.type }}</span>
+                </div>
+                
+                <h4 class="opp-title">{{ opp.title }}</h4>
+                
+                <div class="opp-footer">
+                  <div class="opp-wage mono">${{ opp.wage.toFixed(2) }}/hr</div>
+                  
+                  <div class="match-badge mono" [style.color]="opp.matchScore >= 80 ? 'var(--accent-red)' : 'var(--text-secondary)'">
+                    {{ opp.matchScore }}% MATCH
+                  </div>
+                </div>
+
+                <!-- Match Score progress bar -->
+                <div class="match-bar-container">
+                  <div class="match-bar" [style.width.%]="opp.matchScore" [class.red-bar]="opp.matchScore >= 80"></div>
+                </div>
+              </div>
+            } @empty {
+              <div class="empty-state mono">
+                <span>NENHUMA VAGA ENCONTRADA PARA ESTA COMBINAÇÃO DE FILTROS</span>
+              </div>
+            }
+          }
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Bento Box Features Grid -->
+  <section id="features" class="bento-section">
+    <div class="section-header text-center">
+      <h2 class="section-title">Infraestrutura Descentralizada</h2>
+      <p class="section-desc">Projetado para autonomia e sobrevivência no mercado gig.</p>
+    </div>
+    
+    <div class="bento-grid">
+      
+      <!-- Box 1 -->
+      <div class="bento-card span-2 geo-cut">
+        <div class="card-icon">
+          <!-- Custom inline SVG for Server/Grid icon -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+        </div>
+        <h3>Scraper Fleet Descentralizada</h3>
+        <p>Workers concorrentes rodam em infraestrutura global paralela. Os trabalhos são indexados antes de chegarem à superfície, garantindo acesso prioritário para a classe sem intermediários.</p>
+      </div>
+
+      <!-- Box 2 -->
+      <div class="bento-card">
+        <h2 class="metric-big mono">0%</h2>
+        <h3>Taxa de Atravessador</h3>
+        <p>100% do valor do seu trabalho direto para você. A máquina não cobra pedágio sobre o tempo de vida do trabalhador.</p>
+      </div>
+
+      <!-- Box 3 -->
+      <div class="bento-card">
+        <div class="card-icon">
+          <!-- Custom inline SVG for Shield icon -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 9.7a1 1 0 0 1-.68 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 .76-.97l8-2a1 1 0 0 1 .48 0l8 2A1 1 0 0 1 20 6z"/></svg>
+        </div>
+        <h3>Gerenciamento de Sessão</h3>
+        <p>Sistemas de Anti-Banimento e roteamento de Dummy Accounts. Sua identidade produtiva está protegida.</p>
+      </div>
+
+      <!-- Box 4 -->
+      <div class="bento-card span-2 geo-cut-reverse">
+        <div class="card-visual">
+          <div class="bar-chart">
+            <div class="bar" style="height: 40%"></div>
+            <div class="bar" style="height: 70%"></div>
+            <div class="bar" style="height: 50%"></div>
+            <div class="bar" style="height: 100%; background: var(--accent-red)"></div>
+          </div>
+        </div>
+        <h3>Otimização de Oportunidades</h3>
+        <p>O algoritmo trabalha para você, não contra você. Filtros automatizados por wage/hr e carga cognitiva evitam o desgaste em tarefas de baixo valor.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Manifesto Footer -->
+  <footer id="manifesto" class="dev-footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="logo-mark">A</div>
+        <span class="logo-text">ARBEITERS</span>
+        <p class="brand-sub">Trabalhadores de todo o mundo digital, uni-vos.</p>
+      </div>
+      <div class="footer-meta mono">
+        <span>© 2026 ARBEITERS. LICENÇA MIT.</span>
+        <span>FORJADO PARA O TRABALHADOR.</span>
+      </div>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,22 @@
+<div class="login-container">
+  <div class="login-box">
+    <div class="login-header">
+      <div class="logo-mark">A</div>
+      <h2 class="mono">ARBEITERS_TERMINAL</h2>
+    </div>
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+      <div class="input-group">
+        <label for="username" class="mono">USUÁRIO</label>
+        <input type="text" id="username" name="username" required ngModel>
+      </div>
+      <div class="input-group">
+        <label for="password" class="mono">SENHA</label>
+        <input type="password" id="password" name="password" required ngModel>
+      </div>
+      <button type="submit" class="btn-dev-primary" [disabled]="!loginForm.form.valid">CONECTAR</button>
+    </form>
+    <div class="login-footer mono">
+      <span>AUTENTICAÇÃO_SEGURA_SIMULADA</span>
+    </div>
+  </div>
+</div>
